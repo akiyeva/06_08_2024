@@ -1,8 +1,10 @@
 ﻿namespace _06_08_2024.Models
 {
-    public class Group
+    public class Product
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public int CategoryId { get; set; }
+        public Category Category { get; set; }
     }
 }

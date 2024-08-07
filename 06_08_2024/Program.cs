@@ -7,19 +7,21 @@ namespace _06_08_2024
     {
         static void Main(string[] args)
         {
-          StudentService studentService = new StudentService();
-          List<Student> students = new List<Student>();
-
-            Student student = new Student()
+            ProductService productService = new ProductService();
+          
+            Category category = new Category()
             {
-                FirstName = "Gunel",
-                LastName = "Gunelova",
-                Grade = 100
+                Name = "TestCategory",
             };
 
-            students.Add(student);
+            Product product = new Product()
+            {
+                Name = "TestProduct",
+                CategoryId =1
+            };
 
-            studentService.CreateAsync(student);
+            productService.CreateAsync(product);
+
         }
     }
 }
