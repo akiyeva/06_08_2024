@@ -6,7 +6,11 @@ namespace _06_08_2024.Services
 {
     public class CategoryService
     {
-        AppDbContext _context = new AppDbContext();
+        private AppDbContext _context;
+        public CategoryService()
+        {
+            _context = new AppDbContext();
+        }
         public async Task CreateAsync(Category category)
         {
             await _context.AddAsync(category);
@@ -43,4 +47,4 @@ namespace _06_08_2024.Services
 
     }
 }
-}
+
