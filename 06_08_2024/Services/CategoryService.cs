@@ -13,6 +13,12 @@ namespace _06_08_2024.Services
         }
         public async Task CreateAsync(Category category)
         {
+            var isExist = await _context.Categories.AnyAsync(x => x.Name.ToLower() == category.Name.ToLower());
+            if (isExist)
+            {
+                Console.WriteLine("Bu category artiq movcuddur");
+                return;
+            }
             await _context.AddAsync(category);
             await _context.SaveChangesAsync();
         }
@@ -32,16 +38,26 @@ namespace _06_08_2024.Services
             return category;
         }
 
-        public async Task Update(int id)
+        public async Task Update(Category category)
         {
-            var category = await GetByIdAsync(id);
-            _context.Categories.Update(category);
+            var existCategory = await GetByIdAsync(category.Id);
+
+            var isExist = await _context.Categories.AnyAsync(x => x.Name.ToLower() == category.Name.ToLower());
+            if (isExist)
+            {
+                Console.WriteLine("Bu category artiq movcuddur");
+                return;
+            }
+
+            existCategory.Name = category.Name;
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)
         {
             var category = await GetByIdAsync(id);
             _context.Categories.Remove(category);
+            await _context.SaveChangesAsync();
         }
 
 

@@ -54,11 +54,35 @@ namespace _06_08_2024.Services
 
         public async Task Update(Product product)
         {
-            var dbProduct = await GetByIdAsync(product.Id);
-            
-            dbProduct.Name = product.Name;
-            dbProduct.Category.Name = product.Category.Name;
-           // _context.Products.Update(product);
+
+            var existProduct = await GetByIdAsync(product.Id);
+
+            var isExist = await _context.Products.AnyAsync(x => x.Name.ToLower() == product.Name.ToLower() && x.Id != product.Id);
+
+            if (isExist)
+            {
+                Console.WriteLine("Bu product artiq movcuddur");
+                return;
+            }
+
+            var isExistCategory = await _context.Categories.AnyAsync(x => x.Id == product.CategoryId);
+
+            if (!isExistCategory)
+            {
+                Console.WriteLine("Category tapilmadi");
+                return;
+            }
+
+            if (product.Price < 0)
+            {
+                Console.WriteLine("Price 0 dan kicik ola bilmez");
+                return;
+            }
+
+
+            existProduct.CategoryId = product.CategoryId;
+            existProduct.Name = product.Name;
+            existProduct.Price = product.Price;
 
             await _context.SaveChangesAsync();
         }
@@ -67,6 +91,7 @@ namespace _06_08_2024.Services
         {
             var product = await GetByIdAsync(id);
             _context.Products.Remove(product);
+            await _context.SaveChangesAsync();
         }
 
 
