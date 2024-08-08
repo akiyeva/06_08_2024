@@ -6,7 +6,11 @@ namespace _06_08_2024.Services
 {
     public class ProductService
     {
-        AppDbContext _context = new AppDbContext();
+        private AppDbContext _context;
+        public ProductService()
+        {
+            _context = new AppDbContext();
+        }
         public async Task CreateAsync(Product product)
         {
             var isExist = await _context.Products.AnyAsync(x => x.Name.ToLower() == product.Name.ToLower());
@@ -48,10 +52,15 @@ namespace _06_08_2024.Services
             return product;
         }
 
-        public async Task Update(int id)
+        public async Task Update(Product product)
         {
-            var product = await GetByIdAsync(id);
-            _context.Products.Update(product);
+            var dbProduct = await GetByIdAsync(product.Id);
+            
+            dbProduct.Name = product.Name;
+            dbProduct.Category.Name = product.Category.Name;
+           // _context.Products.Update(product);
+
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)

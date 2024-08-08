@@ -5,7 +5,7 @@ namespace _06_08_2024
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             ProductService productService = new ProductService();
             CategoryService categoryService = new CategoryService();
@@ -21,8 +21,8 @@ namespace _06_08_2024
                 CategoryId = 1
             };
 
-            categoryService.CreateAsync(category);
-            productService.CreateAsync(product);
+            await categoryService.CreateAsync(category);
+            await productService.CreateAsync(product);
 
         }
     }
